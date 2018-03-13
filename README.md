@@ -24,11 +24,11 @@ You will need to add two configuration settings to your config.rb file for these
 
 The integrations may be accessed via the repository menu:
 
-![Access the plugin by clicking on the repository menu dropdown. Hover over "Plugins," then select "Alma Integrations."](https://jackflaps.net/img/plugin_menu.png)
+![Access the plugin by clicking on the repository menu dropdown. Hover over "Plugins," then select "Alma Integrations."](http://jackflaps.net/img/plugin_menu.png)
 
 The index view displays a Resource linker. Select the Resource you wish to integrate with Alma and click "Search." ArchivesSpace will perform two API calls using the MMS ID of the Resource selected -- one to check if a BIB record exists with that MMS ID, and a second to check on that BIB's holdings. Once the calls have been made, the results will appear as seen in the screenshot below:
 
-![Alma integration results. There are three subrecords in the results view: the first for BIB record status, the second for existing holdings, and the third for a dropdown menu allowing the user to add new holdings.](https://jackflaps.net/img/plugin_output.png)
+![Alma integration results. There are three subrecords in the results view: the first for BIB record status, the second for existing holdings, and the third for a dropdown menu allowing the user to add new holdings.](http://jackflaps.net/img/plugin_output.png)
 
 ## Syncing Resources with Alma
 
