@@ -1,0 +1,30 @@
+<%
+  @codes = ['hscol', 'pscol', 'psfol', 'psovz', 'psmap']
+  existing_codes = holdings.map{|h| h['code']}
+%>
+
+<%= form_tag({:controller => :alma_integrations, :action => :add_holdings}, {:class => "form-horizontal", :id => "add_holdings_form", :method => :post}) do |f| %>
+  <input type="hidden" name="mms" value="<%= mms %>"/>
+  <input type="hidden" name="id" value="<%= id %>"/>
+  <div class="subrecord-form-fields">
+    <div class="new-holdings-container">
+      <div class="form-group required">
+        <label class="control-label col-sm-2" for="code">Location:</label>
+        <div class="col-sm-8">
+          <select name="code" class="form-control">
+            <% @codes.each do |code| %>
+              <% unless existing_codes.include?(code) %>
+                <option value="<%= code %>"><%= code %></option>
+              <% end %>
+            <% end %>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="controls">
+        <%= submit_tag I18n.t("plugins.alma_integrations.actions.add"), :class => "btn btn-primary pull-right" %>
+      </div>
+    </div>
+  </div>
+<% end %>

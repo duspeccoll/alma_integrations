@@ -1,0 +1,25 @@
+<div class="row manage-holdings">
+  <div class="col-md-12">
+    <%= render_aspace_partial :partial => "shared/flash_messages" %>
+  </div>
+
+  <div class="col-md-12" style="padding: 30px;">
+    <h2><%= I18n.t("plugins.alma_integrations.title") %></h2>
+
+    <%= form_tag({:controller => :alma_integrations, :action => :search}, {:class => "form-horizontal", :id => "alma_integrations_form"}) do |f| %>
+      <div class="form-group required">
+        <label class="control-label col-sm-2" for="resource">Resource</label>
+        <div class="controls col-sm-8">
+          <%= render_aspace_partial :partial => "resource_linker" %>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="controls">
+          <%= submit_tag I18n.t("plugins.alma_integrations.actions.search"), :class => "btn btn-primary pull-right" %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>

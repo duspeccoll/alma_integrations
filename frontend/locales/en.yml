@@ -1,0 +1,15 @@
+en:
+  plugins:
+    alma_integrations:
+      label: Alma Integrations
+      title: Alma Integrations
+      labels:
+        holdings_id: Holdings ID
+        location_code: Location Code
+        location_name: Location Name
+      actions:
+        add: Add
+        create: Create
+        push: Push to Alma
+        search: Search
+        submit: Submit

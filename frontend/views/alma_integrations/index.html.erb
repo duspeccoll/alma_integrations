@@ -1,0 +1,23 @@
+<%= setup_context :title => I18n.t("plugins.alma_integrations.title") %>
+
+<%= render_aspace_partial :partial => "form" %>
+<br />
+<div class="row" style="display: none">
+  <div class="col-md-12">
+    <div id="alma_integrations_results" class="record-pane"></div>
+  </div>
+</div>
+
+<div id="template_alma_integrations_loading"><!--
+  <center>
+    <%= image_tag asset_path('archivesspace/managed_container_loading.gif') %>
+  </center>
+--></div>
+
+<div id="template_alma_integrations_error_message"><!--
+  <div id="alertBucket" class="alert alert-danger">
+    ${message}
+  </div>
+--></div>
+
+<script src="<%= "#{AppConfig[:frontend_prefix]}assets/alma_integrations.js" %>"></script>
