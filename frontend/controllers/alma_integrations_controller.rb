@@ -208,7 +208,7 @@ class AlmaIntegrationsController < ApplicationController
 
 		uri = URI("#{AppConfig[:alma_api_url]}/almaws/v1/bibs/#{params['mms']}/holdings")
 		uri.query = URI.encode_www_form({:apikey => AppConfig[:alma_apikey]})
-		resp = post_request(uri, data)
+		resp = post_request(uri, data, :use_ssl => true)
 
 		doc = Nokogiri::XML(resp.body)
 
