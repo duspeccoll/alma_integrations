@@ -1,21 +1,21 @@
 <% holdings = results['results'] %>
 
-<h2>Alma results for <%= results['id'] %> <%= results['title'] %></h2>
+<h2>Results for <%= results['id'] %> <%= results['title'] %></h2>
 
-<section id="bib_results" class="subrecord-form-dummy">
-  <h3>Bibliographic Record</h3>
+<section id="bibliographic_subrecord" class="subrecord-form-dummy">
+  <h3>Bibliographic</h3>
   <div class="subrecord-form-container">
     <%= render_aspace_partial :partial => "alma_integrations/add_bibs_form", :locals => { :results => results } %>
   </div>
 </section>
 
-<section id="holdings_results" class="subrecord-form-dummy">
-  <h3>Existing Holdings</h3>
+<section id="holdings_subrecord" class="subrecord-form-dummy">
+  <h3>Holdings</h3>
   <div class="subrecord-form-container">
     <% if holdings.empty? %>
       <p>No holdings were found.</p>
     <% else %>
-      <p>Displaying <%= results['count'] %> Holdings record(s):</p>
+      <p><%= results['count'] %> Holdings location(s) found:</p>
       <table class="table table-striped table-bordered table-condensed table-hover table-search-results">
         <thead>
           <tr>
@@ -35,12 +35,8 @@
         </tbody>
       </table>
     <% end %>
-  </div>
-</section>
 
-<section id="add_holdings" class="subrecord-form-dummy">
-  <h3>Add New Holdings</h3>
-  <div class="subrecord-form-container">
+    <h4>Add New Holdings</h4>
     <% if results['mms'].nil? %>
       <p>I can't add holdings until there's a BIB record for the Resource</p>
     <% else %>
