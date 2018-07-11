@@ -1,29 +1,13 @@
-<div class="add-bibs-container">
+<%= form_tag({:controller => :alma_integrations, :action => :add_bibs}, {:class => "form-horizontal", :id => "post_bibs_form", :method => :post}) do |form| %>
+  <input type="hidden" name="ref" value="<%= results['ref'] %>"/>
+  <% unless results['mms'].nil? %>
+    <input type="hidden" name="mms" value="<%= results['mms'] %>"/>
+  <% end %>
   <div class="form-group">
-    <% if results['mms'].nil? %>
-      <p>There is no MMS ID for this Resource. If this Resource has a BIB record in Alma, please add its MMS ID to the Resource before proceeding.</p>
-      <p>Would you like to create an Alma BIB for this Resource?</p>
+    <% if results['mms'].nil? or !results['bib_found'] %>
+      <%= submit_tag I18n.t("plugins.alma_integrations.actions.create"), :class => "btn btn-primary pull-right" %>
     <% else %>
-      <% if results['bib_found'] %>
-        <p>Record found. Would you like to push the ArchivesSpace data to Alma?</p>
-      <% else %>
-        <p>I could not find a record with this MMS ID in Alma. It may be incorrectly entered in ArchivesSpace, or the MMS ID may be out of date.</p>
-        <p>Would you like to create a new Alma BIB for this Resource?</p>
-      <% end %>
+      <%= submit_tag I18n.t("plugins.alma_integrations.actions.push"), :class => "btn btn-primary pull-right" %>
     <% end %>
   </div>
-
-  <%= form_tag({:controller => :alma_integrations, :action => :add_bibs}, {:class => "form-horizontal", :id => "post_bibs_form", :method => :post}) do |form| %>
-    <input type="hidden" name="ref" value="<%= results['ref'] %>"/>
-    <% unless results['mms'].nil? %>
-      <input type="hidden" name="mms" value="<%= results['mms'] %>"/>
-    <% end %>
-    <div class="form-group">
-      <% if results['mms'].nil? or !results['bib_found'] %>
-        <%= submit_tag I18n.t("plugins.alma_integrations.actions.create"), :class => "btn btn-primary pull-right" %>
-      <% else %>
-        <%= submit_tag I18n.t("plugins.alma_integrations.actions.push"), :class => "btn btn-primary pull-right" %>
-      <% end %>
-    </div>
-  <% end %>
-</div>
+<% end %>

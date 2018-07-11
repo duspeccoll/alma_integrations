@@ -1,21 +1,30 @@
-<% holdings = results['results'] %>
-
 <h2>Results for <%= results['id'] %> <%= results['title'] %></h2>
 
 <section id="bibliographic_subrecord" class="subrecord-form-dummy">
   <h3>Bibliographic</h3>
   <div class="subrecord-form-container">
-    <%= render_aspace_partial :partial => "alma_integrations/add_bibs_form", :locals => { :results => results } %>
+    <% if results['mms'].nil? %>
+      <p>No MMS ID has been entered for this Resource. You may send a new MARC record for it to Alma.</p>
+    <% else %>
+      <% if results['bib_found'] %>
+        <p>Record found. Would you like to push the ArchivesSpace data to Alma?</p>
+      <% else %>
+        <p>No BIB with this MMS ID exists in Alma. Is the MMS ID entered correctly in ArchivesSpace?</p>
+      <% end %>
+    <% end %>
+    <%= render_aspace_partial :partial => "alma_integrations/add_bibs_form", :locals => {:results => results} %>
   </div>
 </section>
 
 <section id="holdings_subrecord" class="subrecord-form-dummy">
   <h3>Holdings</h3>
   <div class="subrecord-form-container">
-    <% if holdings.empty? %>
-      <p>No holdings were found.</p>
+    <% if results['mms'].nil? %>
+      <p>Holdings cannot be located or added until a BIB record exists in Alma. Please add a BIB record using the form above.</p>
+    <% elsif results['holdings'].nil? || results['holdings'].empty? %>
+      <p>No holdings were found. You may add holdings in the form below.</p>
     <% else %>
-      <p><%= results['count'] %> Holdings location(s) found:</p>
+      <p><%= results['holdings'].count %> Holdings location(s) found:</p>
       <table class="table table-striped table-bordered table-condensed table-hover table-search-results">
         <thead>
           <tr>
@@ -25,7 +34,7 @@
           </tr>
         </thead>
         <tbody>
-          <% holdings.each do |holding| %>
+          <% results['holdings'].each do |holding| %>
             <tr>
               <td class="holdings-id"><%= holding['id'] %></td>
               <td class="holdings-location-code"><%= holding['code'] %></td>
@@ -36,13 +45,9 @@
       </table>
     <% end %>
 
-    <h4>Add New Holdings</h4>
-    <% if results['mms'].nil? %>
-      <p>I can't add holdings until there's a BIB record for the Resource</p>
-    <% else %>
-      <%= render_aspace_partial :partial => "add_holdings_form", :locals => {
-      :mms => results['mms'], :id => results['id'], :holdings => holdings
-    } %>
+    <% unless results['mms'].nil? %>
+      <h4>Add New Holdings</h4>
+      <%= render_aspace_partial :partial => "add_holdings_form", :locals => {:results => results} %>
     <% end %>
   </div>
 </section>
