@@ -31,6 +31,7 @@
             <th><%= I18n.t("plugins.alma_integrations.labels.holdings_id") %></th>
             <th><%= I18n.t("plugins.alma_integrations.labels.location_code") %></th>
             <th><%= I18n.t("plugins.alma_integrations.labels.location_name") %></th>
+            <th><%= I18n.t("plugins.alma_integrations.labels.actions") %></th>
           </tr>
         </thead>
         <tbody>
@@ -39,6 +40,11 @@
               <td class="holdings-id"><%= holding['id'] %></td>
               <td class="holdings-location-code"><%= holding['code'] %></td>
               <td class="holdings-location-name"><%= holding['name'] %></td>
+              <td class="holdings-actions">
+                <div class="btn-group">
+                  <a class="btn btn-xs btn-default" href="#">View</a>
+                </div>
+              </td>
             </tr>
           <% end %>
         </tbody>
@@ -49,5 +55,12 @@
       <h4>Add New Holdings</h4>
       <%= render_aspace_partial :partial => "add_holdings_form", :locals => {:results => results} %>
     <% end %>
+  </div>
+</section>
+
+<section id="items_subrecord" class="subrecord-form-dummy">
+  <h3>Item Records</h3>
+  <div id="items_subrecord_form" class="subrecord-form-container">
+    <p>Nothing to display. When you select a Holdings record to view, its items will appear here.</p>
   </div>
 </section>
