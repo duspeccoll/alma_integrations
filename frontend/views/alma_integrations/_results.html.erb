@@ -31,7 +31,6 @@
             <th><%= I18n.t("plugins.alma_integrations.labels.holdings_id") %></th>
             <th><%= I18n.t("plugins.alma_integrations.labels.location_code") %></th>
             <th><%= I18n.t("plugins.alma_integrations.labels.location_name") %></th>
-            <th><%= I18n.t("plugins.alma_integrations.labels.actions") %></th>
           </tr>
         </thead>
         <tbody>
@@ -40,11 +39,6 @@
               <td class="holdings-id"><%= holding['id'] %></td>
               <td class="holdings-location-code"><%= holding['code'] %></td>
               <td class="holdings-location-name"><%= holding['name'] %></td>
-              <td class="holdings-actions">
-                <div class="btn-group">
-                  <a class="btn btn-xs btn-default" href="#">View</a>
-                </div>
-              </td>
             </tr>
           <% end %>
         </tbody>
@@ -60,7 +54,37 @@
 
 <section id="items_subrecord" class="subrecord-form-dummy">
   <h3>Item Records</h3>
-  <div id="items_subrecord_form" class="subrecord-form-container">
-    <p>Nothing to display. When you select a Holdings record to view, its items will appear here.</p>
+  <div class="subrecord-form-container">
+    <% if results['mms'].nil? || results['holdings'].nil? || results['holdings'].empty? %>
+      <p>No items may be displayed without Alma holdings to which they may be attached.</p>
+    <% elsif results['items'].nil? || results['items'].empty? %>
+      <p>No items are attached to this BIB in Alma.</p>
+    <% else %>
+      <p><%= results['items'].count %> Items found:</p>
+      <table class="table table-striped table-bordered table-condensed table-hover table-search-results">
+        <thead>
+          <tr>
+            <th>Item PID</th>
+            <th>Barcode</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Profile</th>
+            <th>Found in ArchivesSpace?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% results['items'].each do |item| %>
+            <tr>
+              <td class="item-pid"><%= item['pid'] %></td>
+              <td class="item-barcode"><%= item['barcode'] %></td>
+              <td class="item-description"><%= item['description'] %></td>
+              <td class="item-location"><%= item['location'] %></td>
+              <td class="item-profile"><%= item['profile'] %></td>
+              <td class="item-top-container"><a href="<%= item['top_container'].gsub('/repositories/2','') %>"><%= item['top_container'] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
   </div>
 </section>

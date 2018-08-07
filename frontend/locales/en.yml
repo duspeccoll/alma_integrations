@@ -4,7 +4,6 @@ en:
       label: Alma Integrations
       title: Alma Integrations
       labels:
-        actions: Actions
         holdings_id: Holdings ID
         location_code: Location Code
         location_name: Location Name

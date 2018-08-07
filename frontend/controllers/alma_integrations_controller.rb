@@ -42,6 +42,7 @@ class AlmaIntegrationsController < ApplicationController
 
 		results['bib_found'] = integrator.bib_search(results['mms'])
 		results['holdings'] = integrator.holding_search(results['mms'])
+		results['items'] = integrator.item_search(results['mms'])
 		results
 	end
 
