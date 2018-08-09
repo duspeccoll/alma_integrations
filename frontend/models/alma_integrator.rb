@@ -65,18 +65,20 @@ class AlmaIntegrator
     items = []
     if response.is_a?(Net::HTTPSuccess)
       obj = JSON.parse(response.body)
-      obj['item'].each do |item|
-        item_data = item['item_data']
-        i = {
-          'pid' => item_data['pid'],
-          'barcode' => item_data['barcode'],
-          'top_container' => search_for_barcode(item_data['barcode']),
-          'description' => item_data['description'],
-          'location' => item_data['location']['value'],
-          'profile' => item_data['internal_note_2']
-        }
+      if obj['total_record_count'] > 0
+        obj['item'].each do |item|
+          item_data = item['item_data']
+          i = {
+            'pid' => item_data['pid'],
+            'barcode' => item_data['barcode'],
+            'top_container' => search_for_barcode(item_data['barcode']),
+            'description' => item_data['description'],
+            'location' => item_data['location']['value'],
+            'profile' => item_data['internal_note_2']
+          }
 
-        items.push(i)
+          items.push(i)
+        end
       end
     end
 
