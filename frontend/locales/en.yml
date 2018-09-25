@@ -4,14 +4,12 @@ en:
       label: Alma Integrations
       title: Alma Integrations
       labels:
-        actions: Actions
         holdings_id: Holdings ID
         location_code: Location Code
         location_name: Location Name
       actions:
         add: Add
-        create: Create Record
-        push: Push Changes to Alma
+        create: Create
+        push: Push to Alma
         search: Search
         submit: Submit
-        view_items: View Items
