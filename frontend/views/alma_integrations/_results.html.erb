@@ -1,4 +1,7 @@
-<% holdings = results['results'] %>
+<%
+  @results = results
+  @holdings = results['results']
+%>
 
 <h2>Alma results for <%= results['id'] %> <%= results['title'] %></h2>
 
@@ -12,7 +15,7 @@
 <section id="holdings_results" class="subrecord-form-dummy">
   <h3>Existing Holdings</h3>
   <div class="subrecord-form-container">
-    <% if holdings.empty? %>
+    <% if @holdings.empty? %>
       <p>No holdings were found.</p>
     <% else %>
       <p>Displaying <%= results['count'] %> Holdings record(s):</p>
@@ -25,7 +28,7 @@
           </tr>
         </thead>
         <tbody>
-          <% holdings.each do |holding| %>
+          <% @holdings.each do |holding| %>
             <tr>
               <td class="holdings-id"><%= holding['id'] %></td>
               <td class="holdings-location-code"><%= holding['code'] %></td>

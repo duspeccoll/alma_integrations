@@ -53,7 +53,7 @@ class AlmaIntegrationsController < ApplicationController
 	end
 
 	def search_bibs(mms)
-		uri = URI("#{AppConfig[:alma_api_url]}/almawa/v1/bibs/#{mms}")
+		uri = URI("#{AppConfig[:alma_api_url]}/#{mms}")
 		uri.query = URI.encode_www_form({:apikey => AppConfig[:alma_apikey]})
 		resp = get_request(uri, :use_ssl => true)
 
@@ -61,8 +61,8 @@ class AlmaIntegrationsController < ApplicationController
 	end
 
 	def search_holdings(response)
-		uri = URI("#{AppConfig[:alma_api_url]}/almawa/v1/bibs/#{response['mms']}/holdings")
-		uri.query = URI.encode_www_form({:apikey => AppConfig[:alma_apikey]})
+		uri = URI("#{AppConfig[:alma_api_url]}/#{response['mms']}/holdings")
+		uri.query = URI.encode_www_form({:apikey => AppConfig[:alma_apikey], :format => 'json'})
 		resp = get_request(uri, :use_ssl => true)
 
 		if resp.is_a?(Net::HTTPSuccess)
@@ -72,7 +72,7 @@ class AlmaIntegrationsController < ApplicationController
 				holdings = obj['holding']
 				holdings.each do |holding|
 					h = {
-						'id' => holding['id'],
+						'id' => holding['holding_id'],
 						'code' => holding['location']['value'],
 						'name' => holding['location']['desc']
 					}
@@ -141,9 +141,9 @@ class AlmaIntegrationsController < ApplicationController
 		data = build_bibs(params)
 
 		if params['mms'].nil?
-			url = "#{AppConfig[:alma_api_url]}/almaws/v1/bibs"
+			url = "#{AppConfig[:alma_api_url]}"
 		else
-			url = "#{AppConfig[:alma_api_url]}/almaws/v1/bibs/#{params['mms']}"
+			url = "#{AppConfig[:alma_api_url]}/#{params['mms']}"
 		end
 		uri = URI(url)
 		uri.query = URI.encode_www_form({:apikey => AppConfig[:alma_apikey]})
@@ -202,7 +202,7 @@ class AlmaIntegrationsController < ApplicationController
 	def post_holdings(params)
 		data = build_holdings(params)
 
-		uri = URI("#{AppConfig[:alma_api_url]}/almaws/v1/bibs/#{params['mms']}/holdings")
+		uri = URI("#{AppConfig[:alma_api_url]}/#{params['mms']}/holdings")
 		uri.query = URI.encode_www_form({:apikey => AppConfig[:alma_apikey]})
 		resp = post_request(uri, data, :use_ssl => true)
 
