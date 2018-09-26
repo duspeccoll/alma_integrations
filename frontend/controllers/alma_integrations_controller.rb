@@ -174,7 +174,7 @@ class AlmaIntegrationsController < ApplicationController
 			flash[:error] = "Error: #{resp.body}, calling #{url}"
 		end
 
-		redirect_to request.referer
+		redirect_to :action => :index
 	end
 
 	def build_holdings(params)
@@ -214,7 +214,7 @@ class AlmaIntegrationsController < ApplicationController
 			flash[:error] = "Error: #{doc.at_css('errorMessage').text} (#{doc.at_css('errorCode').text})"
 		end
 
-		redirect_to action: "Index"
+		redirect_to :action => :index
 	end
 
 end
