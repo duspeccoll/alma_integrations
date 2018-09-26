@@ -90,6 +90,7 @@ class AlmaIntegrationsController < ApplicationController
 			'title' => json['title'],
 			'id' => json['id_0'],
 			'count' => 0,
+			'ref' => ref,
 			'results' => []
 		}
 
@@ -155,7 +156,7 @@ class AlmaIntegrationsController < ApplicationController
 		end
 
 		if resp.is_a?(Net::HTTPSuccess)
-			doc = Nokogiri::XML(response.body)
+			doc = Nokogiri::XML(resp.body)
 			mms = doc.at_css('mms_id').text
 			if params['mms'].nil?
 				flash[:success] = "BIB created. MMS ID: #{mms}"
