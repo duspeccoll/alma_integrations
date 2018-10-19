@@ -13,3 +13,6 @@ en:
         push: Push to Alma
         search: Search
         submit: Submit
+      record_types:
+        bib: BIBs
+        holding: Holdings

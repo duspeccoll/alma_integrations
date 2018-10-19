@@ -9,6 +9,16 @@
         </div>
       </div>
 
+      <div class="form-group required">
+        <label class="col-sm-2 control-label" for="record_type">Record Type</label>
+        <div class="col-sm-4">
+          <select name="record_type" class="form-control">
+            <option value="bib"><%= I18n.t("plugins.alma_integrations.record_types.bib") %></option>
+            <option value="holding"><%= I18n.t("plugins.alma_integrations.record_types.holding") %></option>
+          </select>
+        </div>
+      </div>
+
       <div class="form-group">
         <div class="controls">
           <%= submit_tag I18n.t("plugins.alma_integrations.actions.search"), :class => "btn btn-primary pull-right" %>

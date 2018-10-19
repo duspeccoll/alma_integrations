@@ -4,7 +4,7 @@
       <p>There is no MMS ID for this Resource. If this Resource has a BIB record in Alma, please add its MMS ID to the Resource record before proceeding.</p>
       <p>Would you like to create an Alma BIB for this Resource?</p>
     <% else %>
-      <% if results['bib_found'] %>
+      <% if results['results'] %>
         <p>Record found. Would you like to push ArchivesSpace changes to Alma?</p>
       <% else %>
         <p>No record with this MMS ID exists in Alma. It may be incorrectly entered in ArchivesSpace, or the MMS ID may be out of date.</p>
