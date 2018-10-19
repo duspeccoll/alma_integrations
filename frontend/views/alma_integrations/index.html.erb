@@ -1,11 +1,25 @@
 <%= setup_context :title => I18n.t("plugins.alma_integrations.title") %>
 
-<%= render_aspace_partial :partial => "form" %>
-<br />
-<div class="row" style="display: none">
-  <div class="col-md-12">
-    <div id="alma_integrations_results" class="record-pane"></div>
+<div class="record-pane">
+  <div class="row">
+    <div class="col-md-12">
+      <%= render_aspace_partial :partial => "shared/flash_messages" %>
+    </div>
   </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h2><%= I18n.t("plugins.alma_integrations.title") %></h2>
+    </div>
+  </div>
+
+  <div class="row" style="display: none">
+    <div class="col-md-12">
+      <div id="alma_integrations_results"></div>
+    </div>
+  </div>
+
+  <%= render_aspace_partial :partial => "form" %>
 </div>
 
 <div id="template_alma_integrations_loading"><!--
