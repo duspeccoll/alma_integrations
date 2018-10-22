@@ -1,6 +1,6 @@
 <%
   @codes = ['hscol', 'pscol', 'psfol', 'psovz', 'psmap']
-  existing_codes = results['results']['holdings'].map{|h| h['code']}
+  existing_codes = results['holdings'].map{|h| h['code']}
 %>
 
 <%= form_tag({:controller => :alma_integrations, :action => :add_holdings}, {:class => "form-horizontal", :id => "add_holdings_form", :method => :post}) do |f| %>

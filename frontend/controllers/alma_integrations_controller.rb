@@ -9,8 +9,7 @@ class AlmaIntegrationsController < ApplicationController
 
 	def search
 		params['ref'] = params['resource']['ref'] if params['ref'].nil?
-		results = do_search(params)
-		render_aspace_partial :partial => "alma_integrations/results", :locals => {:results => results}
+		@results = do_search(params)
 	end
 
 	def add_bibs
@@ -29,6 +28,7 @@ class AlmaIntegrationsController < ApplicationController
 
 	def do_search(params)
 		ref = params['ref']
+		page = params['page'].nil? ? 1 : params['page'].to_i
 		json = JSONModel::HTTP::get_json(ref)
 
 		results = {
@@ -50,7 +50,7 @@ class AlmaIntegrationsController < ApplicationController
 		when "holding"
 			integrator.search_holdings(results['mms'])
 		when "item"
-			integrator.search_items(results['mms'], params['page'])
+			integrator.search_items(results['mms'], page)
 		end
 
 		results

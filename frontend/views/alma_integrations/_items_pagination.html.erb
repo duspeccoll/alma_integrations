@@ -1,0 +1,46 @@
+<%
+  page_limit = 10
+
+  first_page = [results['page'] - page_limit / 2, 1].max
+  last_page = [first_page + page_limit, results['last_page']].min
+
+  page_range = (first_page..last_page)
+%>
+
+<% if results %>
+  <%= form_tag({:controller => :alma_integrations, :action => :search}) do |f| %>
+    <input type="hidden" name="ref" value="<%= @results['ref'] %>"/>
+    <input type="hidden" name="record_type" value="<%= @results['record_type'] %>"/>
+    <div class="pagination-centered">
+      <ul class="pagination pagination-sm">
+        <% if not page_range.cover?(1) %>
+          <li><button name="page" value="1" type="submit"><%= I18n.t("pagination.first") %></button></li>
+        <% end %>
+
+        <% if results['page'] > 1 %>
+          <li><button name="page" value="<%= results['page'] - 1%>" type="submit"><%= I18n.t("pagination.previous").html_safe %></button></li>
+        <% else %>
+          <li class="disabled"><a href="#"><%= I18n.t("pagination.previous").html_safe %></a></li>
+        <% end %>
+
+        <% page_range.each do |i| %>
+          <% if results['page'] === i %>
+            <li class="active"><a href="#"><%= i %></a></li>
+          <% else %>
+            <li><button name="page" value="<%= i %>" type="submit"><%= i %></button></li>
+          <% end %>
+        <% end %>
+
+        <% if results['page'] != last_page %>
+          <li><button name="page" value="<%= results['page'] + 1 %>" type="submit"><%= I18n.t("pagination.next").html_safe %></button></li>
+        <% else %>
+          <li class="disabled"><a href="#"><%= I18n.t("pagination.next").html_safe %></a></li>
+        <% end %>
+
+        <% if not page_range.cover?(results['last_page']) %>
+          <li><button name="page" value="<%= results['last_page'] %>" type="submit"><%= I18n.t("pagination.last") %></button></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<% end %>

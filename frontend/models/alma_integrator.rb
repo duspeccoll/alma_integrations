@@ -45,18 +45,32 @@ class AlmaIntegrator
   end
 
   def get_aspace_item_data(barcode)
+    item_data = {}
+
 		aq = AdvancedQueryBuilder.new
 		aq.and('barcode_u_sstr', barcode)
 		url = "#{JSONModel(:top_container).uri_for("")}/search"
 		obj = JSONModel::HTTP::get_json(url, {'filter' => aq.build.to_json})
-		obj['response']['docs'][0]
+
+    item = obj['response']['docs'].first
+    return item_data if item.nil?
+
+    unless item['container_profile_display_string_u_sstr'].nil?
+      item_data['profile'] = item['container_profile_display_string_u_sstr'].first
+        .partition('[')
+        .first
+        .rstrip
+    end
+    item_data['top_container'] = item['uri'] unless item['uri'].nil?
+
+    return item_data
 	end
 
-  def search_items(mms,page=1)
-		results = { 'page' => page, 'items' => [] }
+  def search_items(mms,page)
+    results = { 'page' => page, 'offset' => (page - 1) * 10, 'items' => [] }
 
 		uri = URI("#{@baseurl}/#{mms}/holdings/ALL/items")
-		uri.query = URI.encode_www_form({:apikey => @key, :format => 'json'})
+		uri.query = URI.encode_www_form({:apikey => @key, :format => 'json', :offset => results['offset']})
 		response = HTTPRequest.new.get(uri, :use_ssl => true)
 
 		if response.is_a?(Net::HTTPSuccess)
@@ -68,15 +82,14 @@ class AlmaIntegrator
 				items.each do |item|
 					item_data = item['item_data']
 					as_item_data = get_aspace_item_data(item_data['barcode'])
-					as_profile = as_item_data['container_profile_display_string_u_sstr'][0].partition('[').first.rstrip
 					i = {
 						'pid' => item_data['pid'],
             'barcode' => item_data['barcode'],
             'description' => item_data['description'],
             'location' => item_data['location']['value'],
 						'alma_profile' => item_data['internal_note_2'],
-						'as_profile' => as_profile,
-						'top_container' => as_item_data['uri']
+						'as_profile' => as_item_data['profile'],
+						'top_container' => as_item_data['top_container']
 					}
 
 					results['items'].push(i)
