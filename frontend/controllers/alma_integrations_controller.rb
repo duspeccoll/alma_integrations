@@ -1,3 +1,5 @@
+require 'advanced_query_builder'
+
 class AlmaIntegrationsController < ApplicationController
 
 	set_access_control "view_repository" => [:index, :search, :add_bibs, :add_holdings]
