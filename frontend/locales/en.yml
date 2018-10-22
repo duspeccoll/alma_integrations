@@ -16,3 +16,4 @@ en:
       record_types:
         bib: BIBs
         holding: Holdings
+        item: Items

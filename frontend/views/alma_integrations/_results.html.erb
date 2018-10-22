@@ -40,6 +40,38 @@
           <% end %>
         </div>
       </section>
+    <% elsif results['record_type'] == "item" %>
+      <% if records['items'].nil? || records['items'].empty? %>
+        <p>No items found in Alma for this collection.</p>
+      <% else %>
+        <p>Displaying <%= records['items'].count %> of <%= records['count'] %> Items:</p>
+        <table class="table table-striped table-bordered table-condensed table-hover table-search-results">
+          <thead>
+            <tr>
+              <th>Item PID</th>
+              <th>Barcode</th>
+              <th>Description</th>
+              <th>Location</th>
+              <th>Alma Profile</th>
+              <th>ArchivesSpace Profile</th>
+              <th>Top Container URI</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% records['items'].each do |item| %>
+              <tr>
+                <td class="item-pid"><%= item['pid'] %></td>
+                <td class="item-barcode"><%= item['barcode'] %></td>
+                <td class="item-description"><%= item['description'] %></td>
+                <td class="item-location"><%= item['location'] %></td>
+                <td class="item-alma-profile"><%= item['alma_profile'] %></td>
+                <td class="item-aspace-profile"><%= item['as_profile'] %></td>
+                <td class="item-top-container"><a href="<%= item['top_container'].gsub('/repositories/2','') %>"><%= item['top_container'] %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
     <% end %>
   </div>
 </div>

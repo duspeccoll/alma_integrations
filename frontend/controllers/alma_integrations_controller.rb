@@ -47,6 +47,8 @@ class AlmaIntegrationsController < ApplicationController
 			integrator.search_bibs(results['mms'])
 		when "holding"
 			integrator.search_holdings(results['mms'])
+		when "item"
+			integrator.search_items(results['mms'], params['page'])
 		end
 
 		results
