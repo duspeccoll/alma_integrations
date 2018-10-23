@@ -56,7 +56,7 @@
             <% if results['items'].nil? || results['items'].empty? %>
               <p>No items found in Alma for this collection.</p>
             <% else %>
-              <p>Displaying <strong><%= results['offset'] + 1 %></strong> - <strong><%= results['offset'] + 10 %></strong> of <strong><%= results['count'] %></strong> Items:</p>
+              <p>Displaying <strong><%= results['offset'] + 1 %></strong> - <strong><%= [results['offset'] + 10, results['count']].min %></strong> of <strong><%= results['count'] %></strong> Items:</p>
               <table class="table table-striped table-bordered table-condensed table-hover table-search-results">
                 <thead>
                   <tr>
