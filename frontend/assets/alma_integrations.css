@@ -7,7 +7,14 @@
   color: #337ab7;
   background-color: #fff;
   border: 1px solid #ddd;
-  margin-let: -1px;
+  margin-left: -1px;
+}
+
+.pagination > li > button:hover,
+.pagination > li > button:focus {
+  color: darken(#337ab7, 15%);
+  background-color: #eee;
+  border-color: #ddd;
 }
 
 .pagination-sm > li > button {
