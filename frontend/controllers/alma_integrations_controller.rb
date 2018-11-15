@@ -83,8 +83,7 @@ class AlmaIntegrationsController < ApplicationController
 				flash[:success] = "BIB updated. MMS ID: #{params['mms']}"
 			end
 		else
-			#flash[:error] = "Error: #{doc.at_css('errorMessage').text} (#{doc.at_css('errorCode').text})"
-			flash[:error] = "Error: #{resp.body}, calling #{url}"
+			flash[:error] = "Error: #{response.body}"
 		end
 
 		redirect_to :action => :index
@@ -94,11 +93,11 @@ class AlmaIntegrationsController < ApplicationController
 		data = RecordBuilder.new.build_holding(params['code'], params['id'])
 		response = integrator.post_holding(params['mms'], data)
 
-		doc = Nokogiri::XML(response.body)
     if response.is_a?(Net::HTTPSuccess)
+			doc = Nokogiri::XML(response.body)
 			flash[:success] = "Holdings created. Holding ID: #{doc.at_css('holding_id').text}"
 		else
-			flash[:error] = "Error: #{doc.at_css('errorMessage').text} (#{doc.at_css('errorCode').text})"
+			flash[:error] = "Error: #{response.body}"
 		end
 
 		redirect_to :action => :index
