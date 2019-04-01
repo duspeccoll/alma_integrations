@@ -16,7 +16,7 @@
         <h3><%= I18n.t("plugins.alma_integrations.record_types.#{@results['record_type']}") %> for <%= @results['id'] %> <%= @results['title'] %></h3>
         <div class="subrecord-form-container">
           <% if @results['record_type'] == "bib" %>
-            <%= render_aspace_partial :partial => "alma_integrations/add_bibs_form", :locals => { :results => @results } %>
+            <%= render_aspace_partial :partial => "alma_integrations/add_bibs_form", :locals => { :results => results } %>
           <% elsif @results['record_type'] == "holding" %>
             <% if results['holdings'].empty? || results['holdings'].nil? %>
               <p>No holdings were found.</p>

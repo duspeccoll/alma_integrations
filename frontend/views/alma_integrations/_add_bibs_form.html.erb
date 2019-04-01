@@ -1,16 +1,20 @@
 <div class="add-bibs-container">
   <div class="form-group">
-    <% if results['mms'].nil? %>
-      <p>There is no MMS ID for this Resource. If this Resource has a BIB record in Alma, please add its MMS ID to the Resource record before proceeding.</p>
-      <p>Would you like to create an Alma BIB for this Resource?</p>
-    <% else %>
-      <% if results['results'] %>
-        <p>Record found. Would you like to push ArchivesSpace changes to Alma?</p>
-      <% else %>
-        <p>No record with this MMS ID exists in Alma. It may be incorrectly entered in ArchivesSpace, or the MMS ID may be out of date.</p>
-        <p>Would you like to create a new Alma BIB for this Resource?</p>
-      <% end %>
-    <% end %>
+    <p>Record(s) found:</p>
+    <div class="row">
+      <div class="col-md-6">
+        <h4>ArchivesSpace record</h4>
+        <pre><code><%= results['marc'] %></code></pre>
+      </div>
+      <div class="col-md-6">
+        <h4>Alma record</h4>
+        <% if results['mms'].nil? %>
+          <pre><code>No MMS ID was provided for this Resource, so no MARC record could be retrieved from Alma.</code></pre>
+        <% else %>
+          <pre><code><%= results['alma'] %></code></pre>
+        <% end %>
+      </div>
+    </div>
   </div>
   <%= form_tag({:controller => :alma_integrations, :action => :add_bibs}, {:class => "form-horizontal", :id => "post_bibs_form", :method => :post}) do |form| %>
     <input type="hidden" name="ref" value="<%= results['ref'] %>"/>
