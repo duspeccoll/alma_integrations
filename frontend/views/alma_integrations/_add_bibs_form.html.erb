@@ -1,32 +1,22 @@
 <div class="add-bibs-container">
-  <div class="form-group">
-    <p>Record(s) found:</p>
-    <div class="row">
-      <div class="col-md-6">
-        <h4>ArchivesSpace record</h4>
-        <pre><code><%= results['marc'] %></code></pre>
-      </div>
-      <div class="col-md-6">
-        <h4>Alma record</h4>
-        <% if results['mms'].nil? %>
-          <pre><code>No MMS ID was provided for this Resource, so no MARC record could be retrieved from Alma.</code></pre>
-        <% else %>
-          <pre><code><%= results['alma'] %></code></pre>
+  <div class="row">
+    <div class="col-md-6">
+      <h4>ArchivesSpace record</h4>
+      <pre class="pre-scrollable"><code><%= results['marc'] %></code></pre>
+      <%= form_tag({:controller => :alma_integrations, :action => :add_bibs}, {:class => "form-horizontal", :id => "post_bibs_form", :method => :post}) do |form| %>
+        <input type="hidden" name="ref" value="<%= @results['ref'] %>"/>
+        <% unless results['mms'].nil? %>
+          <input type="hidden" name="mms" value="<%= @results['mms'] %>"/>
         <% end %>
-      </div>
-    </div>
-  </div>
-  <%= form_tag({:controller => :alma_integrations, :action => :add_bibs}, {:class => "form-horizontal", :id => "post_bibs_form", :method => :post}) do |form| %>
-    <input type="hidden" name="ref" value="<%= results['ref'] %>"/>
-    <% unless results['mms'].nil? %>
-      <input type="hidden" name="mms" value="<%= results['mms'] %>"/>
-    <% end %>
-    <div class="form-group">
-      <% if results['mms'].nil? or !results['bib_found'] %>
-        <%= submit_tag I18n.t("plugins.alma_integrations.actions.create"), :class => "btn btn-primary pull-right" %>
-      <% else %>
-        <%= submit_tag I18n.t("plugins.alma_integrations.actions.push"), :class => "btn btn-primary pull-right" %>
+        <div class="form-group pull-right">
+          <%= submit_tag I18n.t("plugins.alma_integrations.actions.push"), :class => "btn btn-primary" %>
+          <%= link_to "Edit Resource", {:controller => :resolver, :action => :resolve_edit, :uri => @results['ref']}, :class => "btn btn-cancel btn-default" %>
+        </div>
       <% end %>
     </div>
-  <% end %>
+    <div class="col-md-6">
+      <h4>Alma record</h4>
+      <pre class="pre-scrollable"><code><%= results['alma'] %></code></pre>
+    </div>
+  </div>
 </div>
