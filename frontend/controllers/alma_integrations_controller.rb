@@ -39,14 +39,14 @@ class AlmaIntegrationsController < ApplicationController
 		}
 
 		if json['user_defined'].nil? or json['user_defined']['string_2'].nil?
-			return results
+			results['mms'] = nil
 		else
 			results['mms'] = json['user_defined']['string_2']
 		end
 
 		results['results'] = case params['record_type']
 		when "bib"
-			integrator.search_bibs(results['mms'], ref)
+			integrator.search_bibs(ref, results['mms'])
 		when "holding"
 			integrator.search_holdings(results['mms'])
 		when "item"

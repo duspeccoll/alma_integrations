@@ -9,8 +9,8 @@ class AlmaIntegrator
     @key = key
   end
 
-  def search_bibs(mms, ref)
-    results = { 'mms' => mms }
+  def search_bibs(ref, mms)
+    results = {}
 
     # first let's get the ArchivesSpace MARC record
     marc_uri = URI("#{JSONModel::HTTP.backend_url}#{ref.gsub(/(\d+)$/,'marc21/\1.xml')}")
@@ -24,16 +24,21 @@ class AlmaIntegrator
     end
 
     # next let's get the Alma MARC record
-    uri = URI("#{@baseurl}/#{mms}")
-    uri.query = URI.encode_www_form({:apikey => @key})
-    response = HTTPRequest.new.get(uri, :use_ssl => true)
-
-    if response.is_a?(Net::HTTPSuccess)
-      xml = Nokogiri::XML(response.body,&:noblanks)
-      marc = xml.at_css('record')
-      results['alma'] = marc.to_xml(indent: 2)
+    if mms.nil?
+      results['alma'] = "No MMS ID is provided for this Resource, so no MARC record may be retrieved from Alma."
     else
-      results['alma'] = "No record with this MMS ID exists in Alma. It may be incorrectly entered in ArchivesSpace, or it may be out of date."
+      results['mms'] = mms
+      uri = URI("#{@baseurl}/#{mms}")
+      uri.query = URI.encode_www_form({:apikey => @key})
+      response = HTTPRequest.new.get(uri, :use_ssl => true)
+
+      if response.is_a?(Net::HTTPSuccess)
+        xml = Nokogiri::XML(response.body,&:noblanks)
+        marc = xml.at_css('record')
+        results['alma'] = marc.to_xml(indent: 2)
+      else
+        results['alma'] = "No record with this MMS ID exists in Alma. It may be incorrectly entered in ArchivesSpace, or it may be out of date."
+      end
     end
 
     results
@@ -41,6 +46,8 @@ class AlmaIntegrator
 
   def search_holdings(mms)
     results = { 'holdings' => [] }
+
+    return if mms.nil?
 
     uri = URI("#{@baseurl}/#{mms}/holdings")
     uri.query = URI.encode_www_form({:apikey => @key, :format => 'json'})
