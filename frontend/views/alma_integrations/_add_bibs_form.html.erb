@@ -1,7 +1,25 @@
-<div class="add-bibs-container">
+<div class="subrecord-form-container">
   <div class="row">
-    <div class="col-md-6">
-      <h4>ArchivesSpace record</h4>
+    <div class="col-md-8">
+      <% if results['aspace'].has_key?('error') %>
+        <div class="search-error">
+          <strong>Not found in ArchivesSpace:</strong> <%= results['aspace']['error'] %>
+        </div>
+      <% else %>
+        <div class="search-success">
+          <strong>Found in ArchivesSpace:</strong> <%= results['aspace']['success'] %>
+        </div>
+      <% end %>
+      <% if results['alma'].has_key?('error') %>
+        <div class="search-error">
+          <strong>Not found in Alma:</strong> <%= results['alma']['error'] %>
+        </div>
+      <% else %>
+        <div class="search-success">
+          <strong>Found in Alma:</strong> <%= results['alma']['success'] %>
+        </div>
+      <% end %>
+      <h4>MARC record</h4>
       <pre class="pre-scrollable"><code><%= results['marc'] %></code></pre>
       <%= form_tag({:controller => :alma_integrations, :action => :add_bibs}, {:class => "form-horizontal", :id => "post_bibs_form", :method => :post}) do |form| %>
         <input type="hidden" name="ref" value="<%= @results['ref'] %>"/>
@@ -13,10 +31,6 @@
           <%= link_to "Edit Resource", {:controller => :resolver, :action => :resolve_edit, :uri => @results['ref']}, :class => "btn btn-cancel btn-default" %>
         </div>
       <% end %>
-    </div>
-    <div class="col-md-6">
-      <h4>Alma record</h4>
-      <pre class="pre-scrollable"><code><%= results['alma'] %></code></pre>
     </div>
   </div>
 </div>

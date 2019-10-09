@@ -21,3 +21,11 @@
   padding: 5px 10px;
   font-size: 12px;
 }
+
+.search-success {
+  color: #155724;
+}
+
+.search-error {
+  color: #721c24;
+}

@@ -9,35 +9,74 @@ class AlmaIntegrator
     @key = key
   end
 
-  def search_bibs(ref, mms)
-    results = {}
-
-    # first let's get the ArchivesSpace MARC record
-    marc_uri = URI("#{JSONModel::HTTP.backend_url}#{ref.gsub(/(\d+)$/,'marc21/\1.xml')}")
-    marc_response = HTTPRequest.new.get(marc_uri)
-    if marc_response.is_a?(Net::HTTPSuccess)
-      xml = Nokogiri::XML(marc_response.body,&:noblanks)
-      marc = xml.at_css('record')
-      results['marc'] = marc.to_xml(indent: 2)
+  def get_archivesspace_bib(ref)
+    aspace = {}
+    uri = URI("#{JSONModel::HTTP.backend_url}#{ref.gsub(/(\d+)$/,'marc21/\1.xml')}")
+    response = HTTPRequest.new.get(uri)
+    if response.is_a?(Net::HTTPSuccess)
+      xml = Nokogiri::XML(response.body,&:noblanks)
+      aspace['content'] = xml.at_css('record')
     else
-      results['marc'] = "An error occurred."
+      aspace['error'] = JSON.parse(response.body)['error']
     end
 
-    # next let's get the Alma MARC record
+    return aspace
+  end
+
+  def get_alma_bib(mms)
+    alma = {}
+
     if mms.nil?
-      results['alma'] = "No MMS ID is provided for this Resource, so no MARC record may be retrieved from Alma."
+      alma['error'] = "No MMS ID provided for this Resource."
     else
-      results['mms'] = mms
       uri = URI("#{@baseurl}/#{mms}")
       uri.query = URI.encode_www_form({:apikey => @key})
       response = HTTPRequest.new.get(uri, :use_ssl => true)
-
       if response.is_a?(Net::HTTPSuccess)
         xml = Nokogiri::XML(response.body,&:noblanks)
-        marc = xml.at_css('record')
-        results['alma'] = marc.to_xml(indent: 2)
+        alma['content'] = xml.at_css('record')
       else
-        results['alma'] = "No record with this MMS ID exists in Alma. It may be incorrectly entered in ArchivesSpace, or it may be out of date."
+        alma['error'] = "The MMS ID for this Resource was not found in Alma. Check that it is entered correctly in ArchivesSpace."
+      end
+    end
+
+    alma
+  end
+
+  def sync_bibs(aspace, alma)
+    aspace_008 = aspace['content'].at_css('controlfield[@tag="008"]')
+    alma_008 = alma['content'].at_css('controlfield[@tag="008"]')
+
+    if aspace_008.text[0,6] != alma_008.text[0,6]
+      controlfield_string = alma_008.text[0,6]
+      controlfield_string += aspace_008.text[6..-1]
+      aspace['content'].at_css('controlfield[@tag="008"]').content = controlfield_string
+    end
+
+    return aspace['content'].to_xml(indent: 2)
+  end
+
+  def search_bibs(ref, mms)
+    results = {'mms' => mms}
+
+    # first, try to get the ArchivesSpace MARC record
+    # next, try to get the Alma MARC record
+    # last, compare them to see if any changes need to be made before overlay
+    # (e.g. bringing over Alma's 008/0-5 for date on file)
+
+    aspace = get_archivesspace_bib(ref)
+    if aspace.has_key?('error')
+      results['aspace'] = {'error' => aspace['error']}
+      results['alma'] = {'error' => "Error generating ArchivesSpace MARC XML"}
+    else
+      results['aspace'] = {'success' => ref}
+      alma = get_alma_bib(mms)
+      if alma.has_key?('error')
+        results['alma'] = {'error' => alma['error']}
+        results['marc'] = aspace['content'].to_xml(indent: 2)
+      else
+        results['alma'] = {'success' => mms}
+        results['marc'] = sync_bibs(aspace, alma)
       end
     end
 
