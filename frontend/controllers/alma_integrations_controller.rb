@@ -8,13 +8,13 @@ class AlmaIntegrationsController < ApplicationController
 	end
 
 	def search
-		if params['resource'].nil?
+		if params['resource'].nil? && params['ref'].nil?
 			flash[:error] = "Error: No resource selected"
 			redirect_to :action => :index
-		else
-			params['ref'] = params['resource']['ref'] if params['ref'].nil?
-			@results = do_search(params)
 		end
+		
+		params['ref'] = params['resource']['ref'] if params['ref'].nil?
+		@results = do_search(params)
 	end
 
 	def add_bibs
