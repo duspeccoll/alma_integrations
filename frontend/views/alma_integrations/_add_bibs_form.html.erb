@@ -4,8 +4,10 @@
   <% unless results['mms'].nil? %>
     <input type="hidden" name="mms" value="<%= @results['mms'] %>"/>
   <% end %>
-  <div class="form-group pull-right">
-    <%= submit_tag I18n.t("plugins.alma_integrations.actions.push"), :class => "btn btn-primary" %>
-    <%= link_to "Edit Resource", {:controller => :resolver, :action => :resolve_edit, :uri => @results['ref']}, :class => "btn btn-cancel btn-default" %>
+  <div class="form-group">
+    <div class="controls">
+      <%= submit_tag I18n.t("plugins.alma_integrations.actions.push"), :class => "btn btn-primary pull-right" %>
+      <%= link_to "Edit Resource", {:controller => :resolver, :action => :resolve_edit, :uri => @results['ref']}, :class => "btn btn-cancel btn-default" %>
+    </div>
   </div>
 <% end %>
