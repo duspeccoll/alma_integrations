@@ -15,9 +15,9 @@
       <div class="subrecord-form-dummy">
         <h3><%= I18n.t("plugins.alma_integrations.record_types.#{@results['record_type']}") %> for <%= @results['id'] %> <%= @results['title'] %></h3>
         <div class="subrecord-form-container">
-          <% if @results['record_type'] == "bib" %>
+          <% if @results['record_type'] == "bibs" %>
             <%= render_aspace_partial :partial => "add_bibs_form", :locals => { :results => results } %>
-          <% elsif @results['record_type'] == "holding" %>
+          <% elsif @results['record_type'] == "holdings" %>
             <% if @results['mms'].nil? %>
               <p>No MMS ID is provided for this Resource, so no Holdings may be retrieved from or added to Alma. Holdings must be associated with an Alma BIB record.</p>
             <% else %>
@@ -52,7 +52,7 @@
               </section>
             <% end %>
 
-          <% elsif @results['record_type'] == "item" %>
+          <% elsif @results['record_type'] == "items" %>
             <% if results['items'].nil? || results['items'].empty? %>
               <p>No items found in Alma for this collection.</p>
             <% else %>

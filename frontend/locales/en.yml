@@ -14,9 +14,9 @@ en:
         search: Search
         submit: Submit
       record_types:
-        bib: BIBs
-        holding: Holdings
-        item: Items
+        bibs: BIBs
+        holdings: Holdings
+        items: Items
       errors:
         no_marc: "No MARC record found in ArchivesSpace, search terminated"
         no_mms: "No MMS ID provided for this Resource."

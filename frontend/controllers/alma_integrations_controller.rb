@@ -12,7 +12,7 @@ class AlmaIntegrationsController < ApplicationController
 			flash[:error] = "Error: No resource selected"
 			redirect_to :action => :index
 		end
-		
+
 		params['ref'] = params['resource']['ref'] if params['ref'].nil?
 		@results = do_search(params)
 	end
@@ -50,11 +50,11 @@ class AlmaIntegrationsController < ApplicationController
 		end
 
 		results['results'] = case params['record_type']
-		when "bib"
+		when "bibs"
 			integrator.search_bibs(ref, results['mms'])
-		when "holding"
+		when "holdings"
 			integrator.search_holdings(results['mms'])
-		when "item"
+		when "items"
 			integrator.search_items(results['mms'], page)
 		end
 
