@@ -1,0 +1,48 @@
+<section id="items_search_results" class="subrecord-form-dummy">
+  <h3><%= I18n.t("plugins.alma_integrations.record_types.#{@results['record_type']}") %> for <%= @results['id'] %> <%= @results['title'] %></h3>
+  <div class="subrecord-form-container">
+    <div class="subrecord-form-fields">
+      <div class="tabbable">
+        <div class="tab-content">
+          <% if results['items'].nil? || results['items'].empty? %>
+            <p>No items found in Alma for this collection.</p>
+          <% else %>
+            <p>Displaying Items <strong><%= results['offset'] + 1 %></strong> - <strong><%= [results['offset'] + 10, results['count']].min %></strong> of <strong><%= results['count'] %></strong>:</p>
+            <table class="table table-striped table-bordered table-condensed table-hover table-search-results">
+              <thead>
+                <tr>
+                  <th>Item PID</th>
+                  <th>Barcode</th>
+                  <th>Description</th>
+                  <th>Location</th>
+                  <th>Alma Profile</th>
+                  <th>ArchivesSpace Profile</th>
+                  <th>Top Container URI</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% results['items'].each do |item| %>
+                  <tr>
+                    <td class="item-pid"><%= item['pid'] %></td>
+                    <td class="item-barcode"><%= item['barcode'] %></td>
+                    <td class="item-description"><%= item['description'] %></td>
+                    <td class="item-location"><%= item['location'] %></td>
+                    <td class="item-alma-profile"><%= item['alma_profile'] %></td>
+                    <td class="item-aspace-profile"><%= item['as_profile'] unless item['as_profile'].blank? %></td>
+                    <td class="item-top-container">
+                      <% unless item['top_container'].blank? %>
+                        <a href="<%= item['top_container'].gsub('/repositories/2','') %>"><%= item['top_container'] %>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+
+            <%= render_aspace_partial :partial => "items_pagination", :locals => {:results => results} %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

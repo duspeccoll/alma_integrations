@@ -1,0 +1,40 @@
+<section id="bibs_search_results" class="subrecord-form-dummy">
+  <h3><%= I18n.t("plugins.alma_integrations.record_types.#{@results['record_type']}") %> for <%= @results['id'] %> <%= @results['title'] %></h3>
+  <div class="subrecord-form-container">
+    <div class="subrecord-form-fields">
+      <div class="tabbable">
+        <div class="tab-content">
+          <% if results['aspace'].has_key?('error') %>
+            <div class="search-error">
+              <strong>Not found in ArchivesSpace:</strong> <%= results['aspace']['error'] %>
+            </div>
+          <% else %>
+            <div class="search-success">
+              <strong>Found in ArchivesSpace:</strong> <%= results['aspace']['success'] %>
+            </div>
+          <% end %>
+          <% if results['alma'].has_key?('error') %>
+            <div class="search-error">
+              <strong>Not found in Alma:</strong> <%= results['alma']['error'] %>
+            </div>
+          <% else %>
+            <div class="search-success">
+              <strong>Found in Alma:</strong> <%= results['alma']['success'] %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <h4>MARC Record</h4>
+    <div class="subrecord-form-fields notes-readonly">
+      <div class="tabbable">
+        <div class="tab-content">
+          <pre class="pre-scrollable"><code><%= results['marc'] %></code></pre>
+        </div>
+      </div>
+    </div>
+
+    <%= render_aspace_partial :partial => "add_bibs_form", :locals => {:results => results} %>
+  </div>
+</section>

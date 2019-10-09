@@ -1,0 +1,40 @@
+<section id="holdings_search_results" class="subrecord-form-dummy">
+  <h3><%= I18n.t("plugins.alma_integrations.record_types.#{@results['record_type']}") %> for <%= @results['id'] %> <%= @results['title'] %></h3>
+  <div class="subrecord-form-container">
+    <div class="subrecord-form-fields">
+      <div class="tabbable">
+        <div class="tab-content">
+          <% if @results['mms'].nil? %>
+            <p>No MMS ID is provided for this Resource, so no Holdings may be retrieved from or added to Alma. Holdings must be associated with an Alma BIB record.</p>
+          <% else %>
+            <% if results['holdings'].nil? or results['holdings'].empty? %>
+              <p>No holdings were found.</p>
+            <% else %>
+              <p>Displaying <%= results['count'] %> record(s):</p>
+              <table class="table table-striped table-bordered table-condensed table-hover table-search-results">
+                <thead>
+                  <tr>
+                    <th><%= I18n.t("plugins.alma_integrations.labels.holdings_id") %></th>
+                    <th><%= I18n.t("plugins.alma_integrations.labels.location_code") %></th>
+                    <th><%= I18n.t("plugins.alma_integrations.labels.location_name") %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% results['holdings'].each do |holding| %>
+                    <tr>
+                      <td class="holdings-id"><%= holding['id'] %></td>
+                      <td class="holdings-location-code"><%= holding['code'] %></td>
+                      <td class="holdings-location-name"><%= holding['name'] %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%= render_aspace_partial :partial => "add_holdings_form", :locals => {:results => results} %>
