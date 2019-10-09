@@ -27,7 +27,7 @@ class AlmaIntegrator
     alma = {}
 
     if mms.nil?
-      alma['error'] = "No MMS ID provided for this Resource."
+      alma['error'] = I18n.t("plugins.alma_integrations.errors.no_mms")
     else
       uri = URI("#{@baseurl}/#{mms}")
       uri.query = URI.encode_www_form({:apikey => @key})
@@ -36,7 +36,7 @@ class AlmaIntegrator
         xml = Nokogiri::XML(response.body,&:noblanks)
         alma['content'] = xml.at_css('record')
       else
-        alma['error'] = "The MMS ID for this Resource was not found in Alma. Check that it is entered correctly in ArchivesSpace."
+        alma['error'] = I18n.t("plugins.alma_integrations.errors.no_record")
       end
     end
 
@@ -67,7 +67,7 @@ class AlmaIntegrator
     aspace = get_archivesspace_bib(ref)
     if aspace.has_key?('error')
       results['aspace'] = {'error' => aspace['error']}
-      results['alma'] = {'error' => "Error generating ArchivesSpace MARC XML"}
+      results['alma'] = {'error' => I18n.t("plugins.alma_integrations.errors.no_marc")}
     else
       results['aspace'] = {'success' => ref}
       alma = get_alma_bib(mms)

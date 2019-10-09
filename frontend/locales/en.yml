@@ -17,3 +17,7 @@ en:
         bib: BIBs
         holding: Holdings
         item: Items
+      errors:
+        no_marc: "No MARC record found in ArchivesSpace, search terminated"
+        no_mms: "No MMS ID provided for this Resource."
+        no_record: "The MMS ID for this Resource was not found in Alma. Check that it is entered correctly in ArchivesSpace."
