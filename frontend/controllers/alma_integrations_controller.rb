@@ -74,8 +74,7 @@ class AlmaIntegrationsController < ApplicationController
 	end
 
 	def post_bibs(params)
-		marc_url = URI.join(AppConfig[:backend_url], params['ref'].gsub(/(\d+?)$/, 'marc21/\1.xml'))
-		data = RecordBuilder.new.build_bib(marc_url, params['mms'])
+		data = RecordBuilder.new.build_bib(params['marc'], params['mms'])
 		response = integrator.post_bib(params['mms'], data)
 
 		if response.is_a?(Net::HTTPSuccess)

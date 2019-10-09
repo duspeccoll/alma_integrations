@@ -1,5 +1,6 @@
 <%= form_tag({:controller => :alma_integrations, :action => :add_bibs}, {:class => "form-horizontal", :id => "post_bibs_form", :method => :post}) do |form| %>
   <input type="hidden" name="ref" value="<%= @results['ref'] %>"/>
+  <input type="hidden" name="marc" value="<%= results['marc'] %>"/>
   <% unless results['mms'].nil? %>
     <input type="hidden" name="mms" value="<%= @results['mms'] %>"/>
   <% end %>

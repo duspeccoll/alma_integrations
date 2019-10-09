@@ -2,9 +2,8 @@ require 'nokogiri'
 
 class RecordBuilder
 
-  def build_bib(marc_url, mms)
-    response = HTTPRequest.new.get(marc_url, {'auth' => true})
-    marc = Nokogiri::XML(response.body)
+  def build_bib(record, mms)
+    marc = Nokogiri::XML(record)
 
     # Nokogiri won't put 'standalone' in the header so you have to do it yourself
 		header = Nokogiri::XML('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>')
