@@ -1,6 +1,10 @@
 require 'net/http'
 
-class HTTPRequest
+# convenience class for making API requests
+#
+# despite the name, it is also used for making GET requests of the ArchivesSpace API
+
+class AlmaRequester
 
   def get(uri, opts = {})
     response = Net::HTTP.start(uri.host, uri.port, opts) do |http|

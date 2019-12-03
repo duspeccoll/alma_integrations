@@ -12,7 +12,7 @@ class AlmaIntegrator
   def get_archivesspace_bib(ref)
     aspace = {}
     uri = URI("#{JSONModel::HTTP.backend_url}#{ref.gsub(/(\d+)$/,'marc21/\1.xml')}")
-    response = HTTPRequest.new.get(uri)
+    response = AlmaRequester.new.get(uri)
     if response.is_a?(Net::HTTPSuccess)
       xml = Nokogiri::XML(response.body,&:noblanks)
       aspace['content'] = xml.at_css('record')
@@ -31,7 +31,7 @@ class AlmaIntegrator
     else
       uri = URI("#{@baseurl}/#{mms}")
       uri.query = URI.encode_www_form({:apikey => @key})
-      response = HTTPRequest.new.get(uri, :use_ssl => true)
+      response = AlmaRequester.new.get(uri, :use_ssl => true)
       if response.is_a?(Net::HTTPSuccess)
         xml = Nokogiri::XML(response.body,&:noblanks)
         alma['content'] = xml.at_css('record')
@@ -90,7 +90,7 @@ class AlmaIntegrator
 
     uri = URI("#{@baseurl}/#{mms}/holdings")
     uri.query = URI.encode_www_form({:apikey => @key, :format => 'json'})
-    response = HTTPRequest.new.get(uri, :use_ssl => true)
+    response = AlmaRequester.new.get(uri, :use_ssl => true)
 
     if response.is_a?(Net::HTTPSuccess)
 			obj = JSON.parse(response.body)
@@ -139,7 +139,7 @@ class AlmaIntegrator
 
 		uri = URI("#{@baseurl}/#{mms}/holdings/ALL/items")
 		uri.query = URI.encode_www_form({:apikey => @key, :format => 'json', :offset => results['offset']})
-		response = HTTPRequest.new.get(uri, :use_ssl => true)
+		response = AlmaRequester.new.get(uri, :use_ssl => true)
 
 		if response.is_a?(Net::HTTPSuccess)
 			obj = JSON.parse(response.body)
@@ -172,11 +172,11 @@ class AlmaIntegrator
     if mms.nil?
       uri = URI(@baseurl)
       uri.query = URI.encode_www_form({:apikey => @key})
-      response = HTTPRequest.new.post(uri, data, :use_ssl => true)
+      response = AlmaRequester.new.post(uri, data, :use_ssl => true)
     else
       uri = URI("#{@baseurl}/#{mms}")
       uri.query = URI.encode_www_form({:apikey => @key})
-      response = HTTPRequest.new.put(uri, data, :use_ssl => true)
+      response = AlmaRequester.new.put(uri, data, :use_ssl => true)
     end
 
     response
@@ -185,7 +185,7 @@ class AlmaIntegrator
   def post_holding(mms, data)
     uri = URI("#{@baseurl}/#{mms}/holdings")
     uri.query = URI.encode_www_form({:apikey => @key})
-    response = HTTPRequest.new.post(uri, data, :use_ssl => true)
+    response = AlmaRequester.new.post(uri, data, :use_ssl => true)
 
     response
   end
