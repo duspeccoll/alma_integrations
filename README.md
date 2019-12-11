@@ -44,11 +44,11 @@ Currently there is no way to pull changes made in Alma back into ArchivesSpace.
 
 ## Resource Holdings
 
-If the user selects Holdings as their record type, the plugin will search for holdings records attached to the BIB with the MMS ID provided on the linked Resource record. It will then cross-check the results against a hard-coded list of locations used at DU for housing Special Collections and Archives materials. It will then return a list of the holdings found via the API, including each holdings’ record ID, location code, and location name.
+If the user selects Holdings as their record type, the plugin searches for all holdings records attached to the BIB with the MMS ID provided by the user in the search form. It cross-checks the results against the list of location codes provided in the `alma_holdings_codes` setting of the ArchivesSpace instance's `config.rb` file, and returns a list of the holdings found via the API, including the record ID, location code, and location name for each.
+
+To add new holdings, the user may select the desired holdings location from the drop-down list found in the Add New Holdings sub-record form. This list contains the location codes set in the `alma_holdings_codes` configuration setting which were not found in the holdings search. Upon selecting a location and clicking the “Add” button, ArchivesSpace will attempt to post the new holdings to Alma, then return to the plugin index page. If successful, the new Holdings ID will be returned; if not, the plugin will return the error message returned by the Alma API.
 
 ![Holdings results from the Alma Integrations plugin](docs/plugin_holdings.png)
-
-To add new holdings, the user may select the desired holdings location from the drop-down list found in the Add New Holdings sub-record form. This list will contain any location codes not already attached to the Resource BIB record. Upon selecting a location and clicking the “Add” button, ArchivesSpace will attempt to post the new holdings to Alma, then return to the plugin index page. If successful, the new Holdings ID will be returned; if not, the plugin will return the error message returned by the Alma API.
 
 ## Resource Items
 
@@ -58,7 +58,6 @@ Currently a search for the Item record type returns a list of items attached to 
 
 # Future Development
 
-* Allow for instance-defined holdings locations, or at least better indicate how an individual Alma user might customize the Holdings code for their specific instance
 * Allow an ArchivesSpace instance to configure its own fields for MMS IDs
 * See if it's possible to integrate Top Containers with Alma's circulation APIs??????????????????
 

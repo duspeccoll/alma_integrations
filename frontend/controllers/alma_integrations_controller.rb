@@ -15,6 +15,7 @@ class AlmaIntegrationsController < ApplicationController
 
 		params['ref'] = params['resource']['ref'] if params['ref'].nil?
 		@results = do_search(params)
+    @codes = AppConfig[:alma_holdings_codes] if params['record_type'] == 'holdings'
 	end
 
 	def add_bibs
