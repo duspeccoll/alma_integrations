@@ -19,7 +19,7 @@ You will need to add three configuration settings to your config.rb file for the
 
 * **AppConfig[:alma_api_url]** represents the URL you use to access the Alma API. These are region-specific; find yours [here](https://developers.exlibrisgroup.com/alma/apis#calling). Note that since the plugin only uses the `/bibs` API, you will need to include "/bibs" at the end of the API URL string.
 * **AppConfig[:alma_apikey]** is the specific API key you use to access the Alma APIs. You may need to consult with your library IT department to access an API key to use for this plugin. If you would like to test API calls against the Alma sandbox, you may request a personal API key through the Alma Developer Network; instructions for this may be found [here](https://developers.exlibrisgroup.com/alma/apis#logging).
-* **AppConfig[:alma_holdings_codes]** is an array of the holdings codes in place at your institution. These will be added to the 852 field of the holdings records that the plugin creates, based on the user's form input.
+* **AppConfig[:alma_holdings]** is an array of the building and location codes in place at your institution. Each item in the array is itself an array, consisting of a building code (`852$b`) and a location code (`852$c`). These are added to the 852 field of the holdings records that the plugin creates.
 
 # Using the integrations
 
