@@ -14,9 +14,9 @@
             <label class="control-label col-sm-2" for="code">Location:</label>
             <div class="col-sm-8">
               <select name="code" class="form-control">
-                <% @codes.each do |code| %>
+                <% @holdings.map{|s| s[1]}.each do |code| %>
                   <% unless existing_codes.include?(code) %>
-                    <option value="<%= code %>"><%= code %></option>
+                    <option value="<%= code %>"><%= I18n.t("plugins.alma_integrations.holdings.#{code}") %> (<%= code %>)</option>
                   <% end %>
                 <% end %>
               </select>
