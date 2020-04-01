@@ -36,7 +36,7 @@ class AlmaIntegrator
         xml = Nokogiri::XML(response.body,&:noblanks)
         alma['content'] = xml.at_css('record')
       else
-        alma['error'] = I18n.t("plugins.alma_integrations.errors.no_record")
+        alma['error'] = I18n.t("plugins.alma_integrations.errors.no_record", mms: mms)
       end
     end
 

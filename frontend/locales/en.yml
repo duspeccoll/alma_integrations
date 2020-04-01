@@ -20,7 +20,7 @@ en:
       errors:
         no_marc: "No MARC record found in ArchivesSpace, search terminated"
         no_mms: "No MMS ID provided for this Resource."
-        no_record: "The MMS ID for this Resource was not found in Alma. Check that it is entered correctly in ArchivesSpace."
+        no_record: "'%{mms}' did not match any MMS ID in Alma. Check that it is entered correctly in ArchivesSpace."
       holdings:
         # populate these according to your preferred labels for holdings codes
         hscol: Hampden Center Special Collections
