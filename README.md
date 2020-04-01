@@ -59,9 +59,8 @@ Currently a search for the Item record type returns a list of items attached to 
 
 # Future Development
 
-* Allow an ArchivesSpace instance to configure its own fields for MMS IDs
-* See if it's possible to integrate Top Containers with Alma's circulation APIs??????????????????
+Requests for new features and bug fixes can be filed as [Issues](https://github.com/duspeccoll/alma_integrations/issues).
 
 # In Conclusion
 
-Feel free to kick the tires on this against your own ArchivesSpace/Alma environment and let me know how it works. Questions, comments, and/or pull requests welcome! E-mail: kevin.clair [at] du.edu.
+Feel free to kick the tires on this against your own ArchivesSpace/Alma environment and let me know how it works. Questions, comments, and/or pull requests welcome! E-mail: kmc35 [at] psu.edu.
