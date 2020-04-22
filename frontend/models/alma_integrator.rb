@@ -32,11 +32,11 @@ class AlmaIntegrator
       uri = URI("#{@baseurl}/#{mms}")
       uri.query = URI.encode_www_form({:apikey => @key})
       response = AlmaRequester.new.get(uri, :use_ssl => true)
+      xml = Nokogiri::XML(response.body,&:noblanks)
       if response.is_a?(Net::HTTPSuccess)
-        xml = Nokogiri::XML(response.body,&:noblanks)
         alma['content'] = xml.at_css('record')
       else
-        alma['error'] = I18n.t("plugins.alma_integrations.errors.no_record")
+        alma['error'] = "[#{xml.at_css('errorCode').text}] #{xml.at_css('errorMessage').text}"
       end
     end
 
