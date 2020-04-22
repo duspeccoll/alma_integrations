@@ -33,6 +33,11 @@ class AlmaIntegrationsController < ApplicationController
   	AlmaIntegrator.new(AppConfig[:alma_api_url], AppConfig[:alma_apikey])
   end
 
+  # set this to your user-defined MMS ID field
+  def mms_field
+    'string_2'
+  end
+
   def do_search(params)
   	ref = params['ref']
   	page = params['page'].nil? ? 1 : params['page'].to_i
@@ -45,10 +50,10 @@ class AlmaIntegrationsController < ApplicationController
   		'record_type' => params['record_type'],
   	}
 
-  	if json['user_defined'].nil? or json['user_defined']['string_2'].nil?
+  	if json['user_defined'].nil? or json['user_defined'][mms_field].nil?
   		results['mms'] = nil
   	else
-  		results['mms'] = json['user_defined']['string_2']
+  		results['mms'] = json['user_defined'][mms_field]
   	end
 
   	results['results'] = case params['record_type']
@@ -66,9 +71,9 @@ class AlmaIntegrationsController < ApplicationController
   def update_resource(ref, mms)
   	obj = JSONModel::HTTP.get_json(ref)
   	if obj['user_defined'].nil?
-  		obj['user_defined'] = { 'string_2' => mms }
+  		obj['user_defined'] = { mms_field => mms }
   	else
-  		obj['user_defined']['string_2'] = mms
+  		obj['user_defined'][mms_field] = mms
   	end
 
   	uri = URI("#{JSONModel::HTTP.backend_url}#{ref}")
