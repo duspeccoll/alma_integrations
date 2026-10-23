@@ -117,7 +117,7 @@ class AlmaIntegrator
 
 		aq = AdvancedQueryBuilder.new
 		aq.and('barcode_u_sstr', barcode)
-		url = "#{JSONModel(:top_container).uri_for("")}/search"
+		url = JSONModel(:top_container).uri_for("search")
 		obj = JSONModel::HTTP::get_json(url, {'filter' => aq.build.to_json})
 
     item = obj['response']['docs'].first
